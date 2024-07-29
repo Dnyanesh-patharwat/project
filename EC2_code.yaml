@@ -1,53 +1,10 @@
 ---
-Parameters:
-  SecurityGroupDescription:
-    Description: Creating EC2 instance using cloudformation #
-    Type: String
+AWSTemplateFormatVersion: 2010-09-09
+Description: create ec2 instance
 
 Resources:
-  MyInstance:
+  WebAppInstance:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: us-east-1 #
-      ImageId: ami-a4c7edb2
+      ImageId: ami-0d5eff06f840b45e9 # ImageID valid only in us-east-1 region
       InstanceType: t2.micro
-      SecurityGroups:
-        - !Ref SSHSecurityGroup
-        - !Ref ServerSecurityGroup
-
-  # an elastic IP for our instance
-  MyEIP:
-    Type: AWS::EC2::EIP
-    Properties:
-      InstanceId: !Ref Group-6-Instance
-
-  # our EC2 security group
-  SSHSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Enable SSH access via port 22
-      SecurityGroupIngress:
-      - CidrIp: 0.0.0.0/0  #
-        FromPort: 22
-        IpProtocol: tcp
-        ToPort: 22
-
-  # our second EC2 security group
-  ServerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: !Ref SecurityGroupDescription
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 192.168.1.1/32
-
-Outputs:
-  ElasticIP:
-    Description: Elastic IP Value
-    Value: !Ref MyEIP
